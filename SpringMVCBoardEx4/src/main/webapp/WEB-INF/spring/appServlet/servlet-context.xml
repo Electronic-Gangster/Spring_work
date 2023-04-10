@@ -20,7 +20,7 @@
 	<beans:bean id="multipartResolver"
 	class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
 		<beans:property name="defaultEncoding" value="utf-8"/>
-		<beans:property name="maxUploadSize" value="5000000"/>
+		<beans:property name="maxUploadSize" value="6000000"/>
 	</beans:bean>
 	
 	<!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory -->

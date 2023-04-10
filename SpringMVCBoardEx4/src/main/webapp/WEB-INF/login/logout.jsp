@@ -21,6 +21,15 @@
 </style>
 </head>
 <body>
-
+	<div style="margin: 100px 100px width: 600px;">
+		<h2><b>${sessionScope.loginemail }님이 로그인 중입니다.</b>
+			<span style="float: right;">
+				<button type="button" class="btn btn-danger"
+				style="width: 100px;"
+				onclick="location.href='./logout'">로그아웃</button>
+			</span>
+		</h2>
+	
+	</div>
 </body>
 </html>

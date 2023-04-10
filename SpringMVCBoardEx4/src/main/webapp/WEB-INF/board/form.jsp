@@ -21,6 +21,18 @@
 </style>
 </head>
 <body>
-
+<i class="bi bi-house" style="margin:30px 50px;font-size: 30px; cursor: pointer; color: red;"
+	onclick="location.href='../'"></i>
+	<hr>
+	<c:if test="${sessionScope.loginok==null}">
+		<script type="text/javascript">
+			alert("먼저 로그인을 해주세요");
+			location.href="../login/login";
+		</script>
+	</c:if>
+	<c:if test="${sessionScope.loginok!=null}">
+		<h2 align="center">${sessionScope.loginemail}님이 로그인 중입니다.</h2>
+	</c:if>
+	<hr>
 </body>
 </html>
