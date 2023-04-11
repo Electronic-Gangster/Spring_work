@@ -42,12 +42,14 @@
 						이메일 : ${dto.email }<br>
 						가입일 : <fmt:formatDate value="${dto.gaipday}" pattern="yyyy-MM-dd HH:mm"/><br>
 						<br>
+						<c:if test="${loginok!=null and sessionScope.loginemail==dto.email}">
 						<button type="button" class="btn btn-outline-success btn-sm"
 						onclick="location.href='updateform?num=${dto.num }'"
 						style="margin-left: 50px;">수정</button>
 					
 						<button type="button" class="btn btn-outline-success btn-sm"
 						onclick="delmember(${dto.num})">삭제 </button>
+						</c:if>
 					</td>
 				</tr>
 			</c:forEach>

@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -103,6 +102,54 @@ public class MemberController {
 		Map<String, String> map=new HashMap<String, String>();
 		map.put("result", count==0?"success":"fail");
 		return map;
+	}
+	
+	@GetMapping("/member/updateform")
+	public String updatefrom(@RequestParam int num, Model model)
+	{
+		MemberDto dto = memberDao.selectOneOfNum(num);
+		model.addAttribute("dto", dto);
+		return "member/updateform";
+	}
+	
+	@PostMapping("/member/updateMember")
+	public String updatemember(
+	
+		@ModelAttribute MemberDto dto,
+		@RequestParam MultipartFile upload,
+		HttpServletRequest request
+		)
+	{
+		//1.업로드할 폴더 경로 구하기
+		String realFolder=request.getSession().getServletContext().getRealPath("/resources/photo");
+		System.out.println(realFolder);
+		
+		//2.사진 업로드
+		String photo=upload.getOriginalFilename();	//업로드한 파일명
+		
+		if(photo.equals("")) {
+			dto.setPhoto(null);
+		}else {
+		
+			try {
+				upload.transferTo(new File(realFolder+"/"+photo));
+			} catch (IllegalStateException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			dto.setPhoto(photo);
+		
+		}
+		//3. update
+		memberDao.updateOfMember(dto);
+		
+		//4. 회원가입 저장 후 멤버 목록으로 이동
+		return "redirect:list";
+		
 	}
 	
 }

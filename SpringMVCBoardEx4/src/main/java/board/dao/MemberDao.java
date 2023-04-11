@@ -60,4 +60,9 @@ public class MemberDao {
 		{
 			return session.selectOne(nameSpace+"selectOneOfNum",num);
 		}
+		
+		public void updateOfMember (MemberDto dto)
+		{
+			session.update(nameSpace+"updateOfMember", dto);
+		}
 }

@@ -46,10 +46,14 @@ public class LoginController {
 			session.setAttribute("loginemail", email);
 			session.setAttribute("saveemail", saveemail==null?"no":"yes");
 			
+			//3. 로그인 한사람의 num값을 얻어서 세션에 저장하기
+			int num=memberDao.selectOneOfEmail(email).getNum();
+			session.setAttribute("loginnum", num);
+			
 			return "redirect:../board/list";
 			
 		}else {
-			//3. 실패시 loginfail.jsp로 가서 자바스크립트 코드 실행
+			//4. 실패시 loginfail.jsp로 가서 자바스크립트 코드 실행
 			return "login/loginfail";
 		}
 	}

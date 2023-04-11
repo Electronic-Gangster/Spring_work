@@ -33,4 +33,10 @@
 	<select id="selectOneOfNum" parameterType="int" resultType="mdto">
 		select * from member where num=#{num}
 	</select>
+	
+	<update id="updateOfMember" parameterType="mdto">
+		update member set name=#{name},
+		<if test="photo!=null">photo=#{photo},</if>
+		hp=#{hp} where num=#{num}
+	</update>
 </mapper>

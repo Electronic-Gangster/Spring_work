@@ -32,7 +32,42 @@
 	</c:if>
 	<c:if test="${sessionScope.loginok!=null}">
 		<h2 align="center">${sessionScope.loginemail}님이 로그인 중입니다.</h2>
+		<br><br>
+		<form action="addboard" method="post" enctype="multipart/form-data">
+			<table class="table table-bordered" style="width: 500px; margin: 30px 30px">
+				<caption align="top"><h4><b>회원글쓰기</b></h4></caption>
+				<tr>
+					<td>
+						<input type="text" name="subject" class="form-control" placeholder="제목을 입력하세요."
+						required="required">
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<h6>사진을 올려주세요 (여러장 가능합니다.)</h6>
+						<input type="file" multiple="multiple" name="upload" class="form-control">
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<textarea name="content" style="width: 100%; height: 100px"
+						class="form-control" placeholder="내용을 입력하세요." required="required">
+						</textarea>
+					</td>
+				</tr>
+				<tr>
+					<td align="center">
+						<button type="submit" class="btn btn-outline-success" style="width: 130px">
+							글저장
+						</button>
+						
+						<button type="reset" class="btn btn-outline-warning" style="width: 130px">
+							취소
+						</button>
+					</td>
+				</tr>
+			</table>
+		</form>
 	</c:if>
-	<hr>
 </body>
 </html>

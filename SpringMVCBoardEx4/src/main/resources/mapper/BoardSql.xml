@@ -13,4 +13,12 @@
 		insert into board (num,subject,content,images,writeday) values
 		(#{num},#{subject},#{content},#{images},now())
 	</insert>
+	
+	<update id="updateReadCountOfBoard" parameterType="int">
+			update board set readcount=readcount+1 where idx=#{idx}
+	</update>
+	
+	<select id="selectOneBoardOfIdx" parameterType="int" resultType="bdto">
+		select * from board where idx=#{idx}
+	</select>
 </mapper>

@@ -36,4 +36,14 @@ public class BoardDao {
 	{
 		session.insert(nameSpace+"insertOfBoard", dto);
 	}
+	
+	public void updateReadCount(int idx)
+	{
+		session.update(nameSpace+"updateReadCountOfBoard", idx);
+	}
+	
+	public BoardDto selectOneBoard(int idx)
+	{
+		return session.selectOne(nameSpace+"selectOneBoardOfIdx", idx);
+	}
 }
