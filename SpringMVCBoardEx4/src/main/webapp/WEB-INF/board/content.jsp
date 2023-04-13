@@ -14,13 +14,126 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.0/font/bootstrap-icons.css">
 <style>
 	body, body *{
-
 		font-family: 'Jua'
-
+	}
+	.alist{
+		padding-left: 10px;
+		color: #666;
 	}
 </style>
+<script type="text/javascript">
+	$(function(){
+		list();//처음 시작시 댓글 출력
+		
+		//댓글 추가 이벤트
+		$("#btnasave").click(function(){
+			//댓글 내용이 없을 경우 경고후 종료
+			let content=$("#answer").val();
+			let idx=${dto.idx};//원글번호
+			let num=${sessionScope.loginnum};
+			
+			console.log(content,idx);
+			if(content.trim()==''){
+				alert("댓글을 입력해주세요");
+				return false;
+			}
+			
+			$.ajax({
+				type:"get",
+				url:"ainsert",
+				data:{"idx":idx,"content":content,"num":num},
+				dataType:"text",
+				success:function(){
+					//댓글 목록 다시 출력
+					list();
+					//입력창에 댓글 삭제
+					$("#answer").val("");					
+				}
+			})
+		});
+		
+		//입력후 엔터누를경우
+		$("#answer").keyup(function(e){
+			if(e.keyCode==13)
+				$("#btnasave").click();
+		});
+		
+		//댓글 숨겻다/나타낫다 하기
+		$("b.answer").click(function(){
+			$(".alist").toggle('fast');
+		});
+		
+		//on 삭제이벤트
+		$(document).on("click",".adelete",function(){
+			let seq=$(this).attr("seq");
+			
+			let b=confirm("해당 댓글을 삭제하려면 확인을 눌러주세요");
+			if(b){
+				$.ajax({
+					type:"get",
+					url:"adelete",
+					data:{"seq":seq},
+					dataType:"text",
+					success:function(){
+						//댓글 목록 다시 출력
+						list();								
+					}
+				});
+			}
+		});
+	});
+	
+	//댓글 출력하는 함수
+	function list()
+	{
+		//글번호 구하기
+		let idx=${dto.idx};
+		//로그인한 사람의 num
+		let num=${sessionScope.loginnum};
+		
+		$.ajax({
+			type:"get",
+			url:"alist",
+			data:{"idx":idx},
+			dataType:"json",
+			success:function(res){
+				//댓글 갯수 출력
+				$("span.acount").text(res.length);
+				//댓글 출력
+				
+				let s="";
+				$.each(res,function(idx,ele){
+					s+=
+					`
+						<img src="../photo/\${ele.photo}" class="rounded-circle" width=30 height=30 hspace=5>
+						\${ele.content}&nbsp;&nbsp;
+						<span style='font-size:13px'>\${ele.writeday}</span>
+					`;
+					
+					if(num==ele.num){
+						s+=
+							`
+							&nbsp;
+							<i class="bi bi-trash adelete"  seq="\${ele.seq}" style="cursor:pointer"></i>							
+							`;							
+					}
+						
+					s+="<br>";	
+				});
+				
+				$(".alist").html(s);
+			}
+		})
+	}
+</script>
 </head>
 <body>
+<c:if test="${sessionScope.loginok==null }">
+	<script type="text/javascript">
+		alert("로그인을 먼저 해주세요");
+		location.href='../login/login';
+	</script>
+</c:if>
 	<div style="margin: 30px 50px; width: 500px;">
 		<table class="table">
 			<tr>
@@ -53,7 +166,8 @@
 			<!-- 댓글 출력 영역 -->
 			<tr>
 				<td>
-					댓글출력
+					<b class="answer" style="cursor: pointer;">댓글 <span class="acount">0</span></b>
+					<div class="alist">111</div>
 				</td>
 			</tr>
 			
@@ -71,8 +185,9 @@
 				<tr>
 					<td>
 						<c:if test="${sessionScope.loginok!=null and sessionScope.loginnum==dto.num}">
-							<button type="button" class="btn btn-outline-success btn-sm" onclick="">수정</button>
-							<button type="button" class="btn btn-outline-danger btn-sm" onclick="">삭제</button>
+							<button type="button" class="btn btn-outline-success btn-sm"
+							onclick="location.href='updateform?idx=${dto.idx}&currentPage=${currentPage}'">수정</button>
+							<button type="button" class="btn btn-outline-danger btn-sm" onclick="bdelete(${dto.idx})">삭제</button>
 						</c:if>
 			<!-- 목록 버튼 영역 -->
 						<button type="button" class="btn btn-outline-secondary"
@@ -81,6 +196,16 @@
 					</td>
 				</tr>
 		</table>
+		<script type="text/javascript">
+			function bdelete(idx)
+			{
+				let b=confirm("원글 삭제시 댓글도 같이 삭제 됩니다.\n 모두 삭제하려면 확인을 눌러주세요.")
+				if(b){
+					let cp=${currentPage};
+					location.href="delete?idx="+idx+"&currentPage="+cp;
+				}
+			}
+		</script>
 	</div>
 </body>
 </html>

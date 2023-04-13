@@ -46,4 +46,14 @@ public class BoardDao {
 	{
 		return session.selectOne(nameSpace+"selectOneBoardOfIdx", idx);
 	}
+	
+	public void deleteBoard(int idx)
+	{
+		session.delete(nameSpace+"deleteBoardOfIdx", idx);
+	}
+	
+	public void updateBoard(BoardDto dto)
+	{
+		session.update(nameSpace+"updateBoard", dto);
+	}
 }

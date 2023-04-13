@@ -84,6 +84,11 @@
 							<c:if test="${dto.images!='no' }">
 								<i class="bi bi-images"></i>
 							</c:if>
+							&nbsp;
+							<!-- 제목 옆에 댓글 갯수 dto에서 가져와 출력 -->
+							<c:if test="${dto.acount>0}">
+								<span style="color: red; font-size:0.8em;">[${dto.acount}]</span>
+							</c:if>
 						</a>
 					</td>
 					

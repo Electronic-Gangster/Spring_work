@@ -12,8 +12,15 @@ public class BoardDto {
 	private Timestamp writeday;
 	private String name;
 	private String photo;
+	private int acount;	//댓글 갯수 저장
 	
 	
+	public int getAcount() {
+		return acount;
+	}
+	public void setAcount(int acount) {
+		this.acount = acount;
+	}
 	public String getName() {
 		return name;
 	}
